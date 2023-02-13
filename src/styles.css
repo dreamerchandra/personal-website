@@ -1,0 +1,165 @@
+body {
+  font-family: Monaco, "Courier New", monospace, Operator monospace;
+  background-color: #222425;
+  color: hsl(36deg 7% 80%);
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body::after {
+  content: " ";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url("../img/bg.png");
+  opacity: 0.1;
+}
+
+.intro {
+  height: 80vh;
+  overflow: scroll;
+}
+.highlight {
+  color: #b5cea8;
+}
+.highlight * {
+  color: #b5cea8;
+}
+.footnote {
+  margin-top: 32px;
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  margin-top: auto;
+  bottom: 0;
+  height: 100px;
+  background-color: black;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.external-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  flex-direction: row;
+  gap: 32px;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+}
+
+.external-link a {
+  height: fit-content;
+  width: fit-content;
+  align-self: center;
+}
+
+.external-link svg {
+  fill: violet;
+  width: 32px;
+  height: 32px;
+  transition: width 0.5s ease-in-out;
+}
+
+.external-link svg:hover {
+  fill: violet;
+  width: 48px;
+  height: 48px;
+}
+
+.github svg {
+  width: 30px;
+  height: 25px;
+}
+
+.github svg:hover {
+  width: 40px;
+  height: 35px;
+}
+
+.email svg {
+  width: 35px;
+  height: 35px;
+}
+.email svg:hover {
+  width: 50px;
+  height: 52px;
+}
+
+@media (min-width: 600px) {
+  .intro {
+    margin: auto;
+    width: 875px;
+    padding-top: 20vh;
+    line-height: 24px;
+    font-weight: 800;
+  }
+
+  h1 {
+    margin-bottom: 42px;
+  }
+
+  .intro p {
+    margin: 16px 0;
+  }
+}
+.footnote {
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 900px) {
+  .intro {
+    margin: auto;
+    width: 85vw;
+    line-height: normal;
+    font-weight: normal;
+  }
+
+  h1 {
+    margin-bottom: 42px;
+    font-weight: bold;
+  }
+
+  .intro p {
+    margin: 32px 0;
+  }
+  .footnote {
+    margin-bottom: 150px;
+  }
+  .external-link {
+    display: flex;
+    width: 100vw;
+    justify-content: space-around;
+  }
+  .external-link svg {
+    display: flex;
+    width: 48px;
+    height: 48px;
+  }
+  .email svg {
+    width: 50px;
+    height: 52px;
+  }
+  .github svg {
+    width: 40px;
+    height: 35px;
+  }
+}
+
+@media screen and (max-height: 1000px) {
+  .intro {
+    padding-bottom: 128px;
+  }
+  .footnote {
+    margin-bottom: 300px;
+  }
+}
