@@ -22,7 +22,9 @@ body::after {
 .intro {
   height: 80vh;
   overflow: scroll;
+  letter-spacing: 1px;
 }
+
 .highlight {
   color: #b5cea8;
 }
@@ -135,6 +137,12 @@ body::after {
   .footnote {
     margin-bottom: 150px;
   }
+}
+
+@media screen and (max-width: 1000px) {
+  .footnote {
+    margin-bottom: 150px;
+  }
   .external-link {
     display: flex;
     width: 100vw;
@@ -142,16 +150,22 @@ body::after {
   }
   .external-link svg {
     display: flex;
-    width: 48px;
-    height: 48px;
+    width: 75px;
+    height: 75px;
   }
   .email svg {
-    width: 50px;
-    height: 52px;
+    width: 80px;
+    height: 83px;
   }
   .github svg {
-    width: 40px;
-    height: 35px;
+    width: 70px;
+    height: 65px;
+  }
+  .footer {
+    height: 175px;
+  }
+  .intro :is(div, p) {
+    margin: 35px 0;
   }
 }
 
