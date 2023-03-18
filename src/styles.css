@@ -162,7 +162,7 @@ body::after {
     height: 65px;
   }
   .footer {
-    height: 175px;
+    height: 150px;
   }
   .intro :is(div, p) {
     margin: 35px 0;
