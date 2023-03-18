@@ -150,16 +150,16 @@ body::after {
   }
   .external-link svg {
     display: flex;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
   }
   .email svg {
-    width: 80px;
-    height: 83px;
+    width: 60px;
+    height: 70px;
   }
   .github svg {
-    width: 70px;
-    height: 65px;
+    width: 55px;
+    height: 50px;
   }
   .footer {
     height: 150px;
