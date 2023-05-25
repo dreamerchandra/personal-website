@@ -18,16 +18,16 @@ jobs:
         run: |
           if [ -d "./website" ]; then
             cd website
-            git checkout ${{ github.event.inputs.branch-name }}
-            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
+            git checkout master
+            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin master | cut -f1)" ]; then
               echo "{has_different_sha}={false}" >> $GITHUB_STATE
-              echo "{CACHE_COMMIT}={${{ github.event.inputs.branch-name }}}" >> $GITHUB_STATE
-              echo "{REMOTE_COMMIT}=$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" >> $GITHUB_STATE
+              echo "{CACHE_COMMIT}={master}" >> $GITHUB_STATE
+              echo "{REMOTE_COMMIT}={$(git ls-remote origin master | cut -f1)}" >> $GITHUB_STATE
             else
-              echo "has_different_sha=true" >> $GITHUB_STATE
+              echo "{has_different_sha}={true}" >> $GITHUB_STATE
             fi
           else
-            echo "has_different_sha=true" >> $GITHUB_STATE
+            echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
         id: check-remote-sha
       - name: To print the environment name
@@ -45,10 +45,10 @@ jobs:
           restore-keys: ${{ env.CACHE_KEY }}
         id: checkout-rocketlane-frontend
         env:
-          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.check-remote-sha.outputs.commit }}-${{ env.CACHE_VERSION }}
+          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-master-${{ steps.check-remote-sha.outputs.commit }}-${{ env.CACHE_VERSION }}
       - name: Fetch branch
         run: |
-          git fetch origin ${{ github.event.inputs.branch-name }}
+          git fetch origin master
           git merge FETCH_HEAD
         working-directory: ./website
         if: steps.check-remote-sha.outputs.REMOTE_COMMIT != steps.check-remote-sha.outputs.CACHE_COMMIT
