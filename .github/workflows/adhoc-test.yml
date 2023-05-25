@@ -21,15 +21,18 @@ jobs:
               echo "{has_different_sha}={false}" >> $GITHUB_STATE
               echo "{CACHE_COMMIT}={${{ github.event.inputs.branch-name }}}" >> $GITHUB_STATE
               echo "{REMOTE_COMMIT}=$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" >> $GITHUB_STATE
-              echo is same
             else
               echo "{has_different_sha}={true}" >> $GITHUB_STATE
-              echo is different
             fi
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
         id: check-remote-sha
+      - name: To print the environment name
+        run: |
+          echo "has_different_sha ${{ steps.check-remote-sha.outputs.has_different_sha }}"
+          echo "CACHE_COMMIT ${{ steps.check-remote-sha.outputs.CACHE_COMMIT }}"
+          echo "REMOTE_COMMIT ${{ steps.check-remote-sha.outputs.REMOTE_COMMIT }}"
       - name: Fetch checkout
         if: steps.check-remote-sha.outputs.has_different_sha == true
         uses: actions/cache@v2
