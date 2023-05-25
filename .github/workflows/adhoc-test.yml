@@ -21,10 +21,10 @@ jobs:
               echo "{has_different_sha}={false}" >> $GITHUB_STATE
               echo "{CACHE_COMMIT}={${{ github.event.inputs.branch-name }}}" >> $GITHUB_STATE
               echo "{REMOTE_COMMIT}=$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" >> $GITHUB_STATE
-              echo "is same"
+              echo is same
             else
               echo "{has_different_sha}={true}" >> $GITHUB_STATE
-              echo "is different"
+              echo is different
             fi
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
