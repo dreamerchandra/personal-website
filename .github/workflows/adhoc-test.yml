@@ -43,7 +43,7 @@ jobs:
           git fetch origin ${{ github.event.inputs.branch-name }}
           git merge FETCH_HEAD
         working-directory: ./website
-        if: steps.check-remote-sha.outputs.commit != steps.check-remote-sha.outputs.CACHE_COMMIT
+        if: steps.check-remote-sha.outputs.REMOTE_COMMIT != steps.check-remote-sha.outputs.CACHE_COMMIT
       - name: Cache Yarn dependencies
         uses: actions/cache@v2
         with:
