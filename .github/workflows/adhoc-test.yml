@@ -13,16 +13,15 @@ jobs:
     steps:
       - name: Check if remote repo has different SHA
         run: |
-          if [ -d "./website" ]; then
-            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
-              echo "{has_different_sha}={false}" >> $GITHUB_STATE
+          if [ -d "./website" ] and [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
+            echo "{has_different_sha}={false}" >> $GITHUB_STATE
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
         id: check-remote-sha
         env:
           CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.checkout-rocketlane-frontend.outputs.commit }}
-      - name: Checkout Rocketlane Frontend
+      - name: Fetch checkout
         if: steps.check-remote-sha.outputs.has_different_sha == 'true'
         uses: actions/checkout@v2
         with:
@@ -30,7 +29,7 @@ jobs:
           ref: ${{ github.event.inputs.branch-name }}
           path: ./website
         id: checkout-rocketlane-frontend
-      - name: Cache Checkout
+      - name: Using cache
         if: steps.check-remote-sha.outputs.has_different_sha == 'false'
         uses: actions/cache@v2
         with:
@@ -39,7 +38,7 @@ jobs:
           restore-keys: ${{ env.CACHE_KEY }}
         env:
           CACHE_COMMIT: ${{ steps.checkout-rocketlane-frontend.outputs.commit }}
-      - name: Fetch Remote
+      - name: Fetch branch
         run: |
           git fetch origin ${{ github.event.inputs.branch-name }}
           git merge FETCH_HEAD
