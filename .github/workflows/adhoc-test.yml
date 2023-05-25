@@ -14,9 +14,9 @@ jobs:
       - name: Check if remote repo has different SHA
         run: |
           if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
-            echo "has_different_sha::false" >> $GITHUB_OUTPUT
+            echo "{has_different_sha}={false}" >> $GITHUB_STATE
           else
-            echo "has_different_sha::true" >> $GITHUB_OUTPUT
+            echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
         id: check-remote-sha
         env:
