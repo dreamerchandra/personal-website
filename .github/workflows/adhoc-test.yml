@@ -28,7 +28,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.checkout-rocketlane-frontend.outputs.commit }}
       - name: Fetch checkout
-        if: steps.check-remote-sha.outputs.has_different_sha == 'true'
+        if: steps.check-remote-sha.outputs.has_different_sha == true
         uses: actions/checkout@v2
         with:
           repository: dreamerchandra/MingleMunch
@@ -36,7 +36,7 @@ jobs:
           path: ./website
         id: checkout-rocketlane-frontend
       - name: Using cache
-        if: steps.check-remote-sha.outputs.has_different_sha == 'false'
+        if: steps.check-remote-sha.outputs.has_different_sha == false
         uses: actions/cache@v2
         with:
           path: ./website
