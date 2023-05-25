@@ -33,7 +33,7 @@ jobs:
           echo "has_different_sha ${{ steps.check-remote-sha.outputs.has_different_sha }}"
           echo "CACHE_COMMIT ${{ steps.check-remote-sha.outputs.CACHE_COMMIT }}"
           echo "REMOTE_COMMIT ${{ steps.check-remote-sha.outputs.REMOTE_COMMIT }}"
-          echo "$GITHUB_STATE"
+            echo "${{ env }}"
       - name: Fetch checkout
         if: steps.check-remote-sha.outputs.has_different_sha == true
         uses: actions/cache@v2
