@@ -11,12 +11,39 @@ jobs:
   checkout-rocketlane-frontend:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if remote repo has different SHA
+        run: |
+          if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
+            echo "::set-output name=has_different_sha::false"
+          else
+            echo "::set-output name=has_different_sha::true"
+          fi
+        id: check-remote-sha
       - name: Checkout Rocketlane Frontend
+        if: steps.check-remote-sha.outputs.has_different_sha == 'true'
         uses: actions/checkout@v2
         with:
           repository: dreamerchandra/MingleMunch
           ref: ${{ github.event.inputs.branch-name }}
           path: ./website
+        id: checkout-rocketlane-frontend
+        env:
+          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.checkout-rocketlane-frontend.outputs.commit }}
+      - name: Cache Checkout
+        if: steps.check-remote-sha.outputs.has_different_sha == 'false'
+        uses: actions/cache@v2
+        with:
+          path: ./website
+          key: ${{ env.CACHE_KEY }}
+          restore-keys: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.checkout-rocketlane-frontend.outputs.commit }}
+        env:
+          CACHE_COMMIT: ${{ steps.checkout-rocketlane-frontend.outputs.commit }}
+      - name: Fetch Remote
+        run: |
+          git fetch origin ${{ github.event.inputs.branch-name }}
+          git merge FETCH_HEAD
+        working-directory: ./website
+        if: steps.checkout-rocketlane-frontend.outputs.commit != env.CACHE_COMMIT
       - name: Cache Yarn dependencies
         uses: actions/cache@v2
         with:
