@@ -1,8 +1,11 @@
 name: ad-hoc-tests
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      branch-name:
+        description: 'Enter the remote branch name'
+        required: true
 
 jobs:
   checkout-rocketlane-frontend:
@@ -12,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: dreamerchandra/MingleMunch
-          ref: master
+          ref: ${{ github.event.inputs.branch-name }}
           path: ./website
       - name: Cache Yarn dependencies
         uses: actions/cache@v2
