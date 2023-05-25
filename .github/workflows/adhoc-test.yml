@@ -19,6 +19,8 @@ jobs:
             git checkout ${{ github.event.inputs.branch-name }}
             if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
               echo "{has_different_sha}={false}" >> $GITHUB_STATE
+              echo "{CACHE_COMMIT}={${{ github.event.inputs.branch-name }}}" >> $GITHUB_STATE
+              echo "{REMOTE_COMMIT}=$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" >> $GITHUB_STATE
             else
               echo "{has_different_sha}={true}" >> $GITHUB_STATE
             fi
@@ -26,31 +28,22 @@ jobs:
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
         id: check-remote-sha
-        env:
-          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.checkout-rocketlane-frontend.outputs.commit }}-${{ env.CACHE_VERSION }}
       - name: Fetch checkout
         if: steps.check-remote-sha.outputs.has_different_sha == true
-        uses: actions/checkout@v2
-        with:
-          repository: dreamerchandra/MingleMunch
-          ref: ${{ github.event.inputs.branch-name }}
-          path: ./website
-        id: checkout-rocketlane-frontend
-      - name: Using cache
-        if: steps.check-remote-sha.outputs.has_different_sha == false
         uses: actions/cache@v2
         with:
+          path: ./website
           key: ${{ env.CACHE_KEY }}
           restore-keys: ${{ env.CACHE_KEY }}
-          path: ./website
+        id: checkout-rocketlane-frontend
         env:
-          CACHE_COMMIT: ${{ steps.checkout-rocketlane-frontend.outputs.commit }}
+          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-${{ github.event.inputs.branch-name }}-${{ steps.check-remote-sha.outputs.commit }}-${{ env.CACHE_VERSION }}
       - name: Fetch branch
         run: |
           git fetch origin ${{ github.event.inputs.branch-name }}
           git merge FETCH_HEAD
         working-directory: ./website
-        if: steps.checkout-rocketlane-frontend.outputs.commit != env.CACHE_COMMIT
+        if: steps.check-remote-sha.outputs.commit != steps.check-remote-sha.outputs.CACHE_COMMIT
       - name: Cache Yarn dependencies
         uses: actions/cache@v2
         with:
