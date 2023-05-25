@@ -13,8 +13,13 @@ jobs:
     steps:
       - name: Check if remote repo has different SHA
         run: |
-          if [ -d "./website" ] and [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
-            echo "{has_different_sha}={false}" >> $GITHUB_STATE
+          if [ -d "./website" ]; then
+            cd website
+            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
+              echo "{has_different_sha}={false}" >> $GITHUB_STATE
+            else
+              echo "{has_different_sha}={true}" >> $GITHUB_STATE
+            fi
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
