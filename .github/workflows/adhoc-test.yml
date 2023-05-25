@@ -27,6 +27,7 @@ jobs:
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
           fi
+        working-directory: ./website
         id: check-remote-sha
       - name: To print the environment name
         run: |
