@@ -22,8 +22,8 @@ jobs:
             if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin master | cut -f1)" ]; then
               echo "::set-output name=has_different_sha::{false}"
               echo "{CACHE_COMMIT}={master}" >> $GITHUB_STATE
-              echo "::set-output name=CACHE_COMMIT::{master}"
-              echo "::set-output name=REMOTE_COMMIT::{$(git ls-remote origin master | cut -f1)}"
+              echo "::set-output name=CACHE_COMMIT::${master}"
+              echo "::set-output name=REMOTE_COMMIT::$(git ls-remote origin master | cut -f1)"
             else
               echo "::set-output name=has_different_sha::{true}"
             fi
