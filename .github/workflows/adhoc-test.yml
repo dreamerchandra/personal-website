@@ -1,0 +1,36 @@
+name: ad-hoc-tests
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  checkout-rocketlane-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Rocketlane Frontend
+        uses: actions/checkout@v2
+        with:
+          repository: dreamerchandra/MingleMunch
+          ref: master
+          path: ./website
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: ./website/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./website/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Cache Build artifacts
+        uses: actions/cache@v2
+        with:
+          path: ./website/dist
+          key: ${{ runner.os }}-build-${{ hashFiles('./website/tsconfig.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      - name: Install dependencies
+        run: |
+          yarn install
+      - name: Build
+        run: |
+          yarn build
