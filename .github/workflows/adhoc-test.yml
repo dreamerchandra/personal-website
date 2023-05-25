@@ -31,10 +31,8 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-          with:
-            working-directory: ./website
+        working-directory: ./website
       - name: Build
         run: |
-          yarn build
-          with:
-            working-directory: ./website
+          yarn install
+        working-directory: ./website
