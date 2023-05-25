@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch-name:
-        default: 'master'
+        default: 'startup-mern'
         description: 'Enter the remote branch name'
         required: true
   push:
@@ -18,10 +18,10 @@ jobs:
         run: |
           if [ -d "./website" ]; then
             cd website
-            git checkout master
-            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin master | cut -f1)" ]; then
+            git checkout startup-mern
+            if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin startup-mern | cut -f1)" ]; then
               echo "::set-output name=has_different_sha::{false}";
-              echo "::set-output name=CACHE_COMMIT::master";
+              echo "::set-output name=CACHE_COMMIT::startup-mern";
               echo "::set-output name=REMOTE_COMMIT::$(git rev-parse HEAD)";
             else
               echo "::set-output name=has_different_sha::{true}";
@@ -45,10 +45,10 @@ jobs:
           restore-keys: ${{ env.CACHE_KEY }}
         id: checkout-rocketlane-frontend
         env:
-          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-master-${{ steps.check-remote-sha.outputs.commit }}-${{ env.CACHE_VERSION }}
+          CACHE_KEY: ${{ runner.os }}-checkout-${{ github.sha }}-startup-mern-${{ steps.check-remote-sha.outputs.commit }}-${{ env.CACHE_VERSION }}
       - name: Fetch branch
         run: |
-          git fetch origin master
+          git fetch origin startup-mern
           git merge FETCH_HEAD
         working-directory: ./website
         if: steps.check-remote-sha.outputs.REMOTE_COMMIT != steps.check-remote-sha.outputs.CACHE_COMMIT
