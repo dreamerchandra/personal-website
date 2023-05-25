@@ -28,6 +28,7 @@ jobs:
             fi
           else
             echo "{has_different_sha}={true}" >> $GITHUB_STATE
+            echo "::set-output name=has_different_sha::{true}"
           fi
         id: check-remote-sha
       - name: To print the environment name
