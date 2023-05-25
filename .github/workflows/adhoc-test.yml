@@ -20,13 +20,14 @@ jobs:
             cd website
             git checkout master
             if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin master | cut -f1)" ]; then
-              echo "::set-output name=has_different_sha::{false}"
-              echo "::set-output name=REMOTE_COMMIT::$(git rev-parse HEAD)"
+              echo "::set-output name=has_different_sha::{false}";
+              echo "::set-output name=CACHE_COMMIT::master";
+              echo "::set-output name=REMOTE_COMMIT::$(git rev-parse HEAD)";
             else
-              echo "::set-output name=has_different_sha::{true}"
+              echo "::set-output name=has_different_sha::{true}";
             fi
           else
-            echo "::set-output name=has_different_sha::{true}"
+            echo "::set-output name=has_different_sha::{true}";
           fi
         id: check-remote-sha
       - name: To print the environment name
