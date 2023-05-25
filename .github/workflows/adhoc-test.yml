@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       branch-name:
+        default: 'master'
         description: 'Enter the remote branch name'
         required: true
+  push:
 env:
   CACHE_VERSION: 1
 jobs:
