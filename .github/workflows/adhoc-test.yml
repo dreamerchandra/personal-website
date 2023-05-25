@@ -15,6 +15,7 @@ jobs:
         run: |
           if [ -d "./website" ]; then
             cd website
+            git checkout ${{ github.event.inputs.branch-name }}
             if [ "$(git rev-parse HEAD)" = "$(git ls-remote origin ${{ github.event.inputs.branch-name }} | cut -f1)" ]; then
               echo "{has_different_sha}={false}" >> $GITHUB_STATE
             else
